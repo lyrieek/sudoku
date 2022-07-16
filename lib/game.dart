@@ -1,12 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:sudoku/select_num.dart';
 
 class GameScreen extends StatelessWidget {
   const GameScreen({required this.level, Key? key}) : super(key: key);
   final int level;
 
-  List<Container> getBox() {
+  List<Container> getBox(BuildContext context) {
     const commonLine = BorderSide(color: Colors.orange, width: 1);
     const boldLine = BorderSide(color: Colors.orange, width: 2);
     List<Container> btnArr = [];
@@ -28,7 +29,14 @@ class GameScreen extends StatelessWidget {
             child: TextButton(
                 style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all(Colors.black)),
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    // 传入 context
+                    context: context,
+                    // 构建 Dialog 的视图
+                    builder: SelectNum.view(),
+                  );
+                },
                 child: Text("${Random().nextInt(9) + 1}"))));
       }
     }
@@ -51,7 +59,7 @@ class GameScreen extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 9,
               ),
-              children: getBox(),
+              children: getBox(context),
             ),
             ElevatedButton(
                 child: const Text("返回"),
