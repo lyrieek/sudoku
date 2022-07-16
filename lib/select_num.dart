@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
 
 class SelectNum {
+  static List<TextButton> getNumItems(BuildContext context) {
+    List<TextButton> btnArr = [];
+    for (int i = 1; i <= 9; i++) {
+      btnArr.add(TextButton(
+              style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all(Colors.black)),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("$i",
+                  style: const TextStyle(color: Colors.black, fontSize: 24))));
+    }
+    return btnArr;
+  }
+
   static WidgetBuilder view() {
     return (_) => Padding(
-          padding: const EdgeInsets.all(30),
+          padding: const EdgeInsets.all(50),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -20,6 +35,15 @@ class SelectNum {
                               color: Colors.black,
                               fontSize: 16,
                               decoration: TextDecoration.none)),
+                    ),
+                    GridView(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                      ),
+                      children: getNumItems(_),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
