@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
       btnArr.add(TextButton(
           onPressed: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => GameScreen(level: i)));
+                MaterialPageRoute(builder: (context) => GameWidget(level: i)));
           },
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.purple),

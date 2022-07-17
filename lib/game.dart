@@ -1,11 +1,20 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:sudoku/data_transient.dart';
 import 'package:sudoku/select_num.dart';
 
-class GameScreen extends StatelessWidget {
-  const GameScreen({required this.level, Key? key}) : super(key: key);
+class GameWidget extends StatefulWidget {
+  const GameWidget({Key? key, required this.level}) : super(key: key);
+
   final int level;
+
+  @override
+  State<GameWidget> createState() => GameState();
+}
+
+class GameState extends State<GameWidget> {
+  Map<String, int> workArea = {};
 
   List<Container> getBox(BuildContext context) {
     const commonLine = BorderSide(color: Colors.orange, width: 1);
@@ -13,6 +22,9 @@ class GameScreen extends StatelessWidget {
     List<Container> btnArr = [];
     for (int x = 1; x <= 9; x++) {
       for (int y = 1; y <= 9; y++) {
+        int value = DataTransient.str("select.pos") == "$x,$y"
+            ? DataTransient.get("select.value")
+            : Random().nextInt(9) + 1;
         btnArr.add(Container(
             decoration: BoxDecoration(
               border: Border(
@@ -30,6 +42,12 @@ class GameScreen extends StatelessWidget {
                 style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all(Colors.black)),
                 onPressed: () {
+                  DataTransient.storage("select.pos", "$x,$y");
+                  // DataTransient.record("select.value", value);
+                  DataTransient.watchOne("select.value", (newValue) {
+                    DataTransient.record("select.value", int.parse(newValue));
+                    setState(() => workArea["$x,$y"] = int.parse(newValue));
+                  });
                   showDialog(
                     // 传入 context
                     context: context,
@@ -37,9 +55,10 @@ class GameScreen extends StatelessWidget {
                     builder: SelectNum.view(),
                   );
                 },
-                child: Text("${Random().nextInt(9) + 1}"))));
+                child: Text("$value"))));
       }
     }
+    DataTransient.move("select.pos", "select.old.pos");
     return btnArr;
   }
 
@@ -47,7 +66,7 @@ class GameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('第$level关'),
+        title: Text('第${widget.level}关'),
       ),
       body: Center(
           child: Column(

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 
+import 'data_transient.dart';
+
 class SelectNum {
   static List<TextButton> getNumItems(BuildContext context) {
     List<TextButton> btnArr = [];
     for (int i = 1; i <= 9; i++) {
       btnArr.add(TextButton(
-              style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all(Colors.black)),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text("$i",
-                  style: const TextStyle(color: Colors.black, fontSize: 24))));
+          style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all(Colors.black)),
+          onPressed: () {
+            DataTransient.record("select.value", i);
+            Navigator.pop(context);
+          },
+          child: Text("$i",
+              style: const TextStyle(color: Colors.black, fontSize: 24))));
     }
     return btnArr;
   }
