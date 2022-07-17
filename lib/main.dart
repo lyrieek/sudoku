@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'game.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const SudokuApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class SudokuApp extends StatelessWidget {
+  const SudokuApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,21 +18,21 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: const MyHomePage(title: '天天数独'),
+      home: const HomePage(title: '天天数独'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class HomePageState extends State<HomePage> {
 
   List<TextButton> getLevels() {
     List<TextButton> btnArr = [];
