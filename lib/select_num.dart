@@ -14,7 +14,7 @@ class SelectNum {
             Navigator.pop(context);
           },
           child: Text("$i",
-              style: const TextStyle(color: Colors.black, fontSize: 24))));
+              style: const TextStyle(color: Colors.black, fontSize: 32))));
     }
     return btnArr;
   }

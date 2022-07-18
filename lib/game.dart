@@ -55,7 +55,8 @@ class GameState extends State<GameWidget> {
                     builder: SelectNum.view(),
                   );
                 },
-                child: Text("$value"))));
+                child: Text("$value",
+                    style: const TextStyle(color: Colors.black, fontSize: 24)))));
       }
     }
     DataTransient.move("select.pos", "select.old.pos");
