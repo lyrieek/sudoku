@@ -39,7 +39,6 @@ class GameState extends State<GameWidget> {
             value = 0;
           }
         }
-        bool isReservation = reservationArea.containsKey(pos);
         btnArr.add(Container(
             decoration: BoxDecoration(
               border: Border(
@@ -54,13 +53,13 @@ class GameState extends State<GameWidget> {
               ),
             ),
             child: NumberButton(
-                isReservation: isReservation,
+                isReservation: reservationArea.containsKey(pos),
                 value: value,
                 action: () {
-                  DataTransient.storage("select.pos", "$x,$y");
+                  DataTransient.storage("select.pos", pos);
                   DataTransient.watchOne("select.value", (newValue) {
                     DataTransient.record("select.value", int.parse(newValue));
-                    setState(() => workArea["$x,$y"] = int.parse(newValue));
+                    setState(() => workArea[pos] = int.parse(newValue));
                   });
                   showDialog(
                     context: context,
