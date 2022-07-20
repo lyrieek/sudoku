@@ -16,7 +16,7 @@ class GameWidget extends StatefulWidget {
 class GameState extends State<GameWidget> {
   Map<String, int> reservationArea = {};
   Map<String, int> workArea = {};
-  bool inited = false;
+  bool initialized = false;
 
   List<Container> getBox(BuildContext context) {
     const commonLine = BorderSide(color: Colors.orange, width: 1);
@@ -28,9 +28,9 @@ class GameState extends State<GameWidget> {
         int value = 0;
         if (workArea[pos] != null) {
           value = workArea[pos] ?? 0;
-        } else if(reservationArea[pos] != null) {
+        } else if (reservationArea[pos] != null) {
           value = reservationArea[pos] ?? 0;
-        } else if(!inited){
+        } else if (!initialized) {
           value = Random().nextInt(12) - 2;
           if (value > 0) {
             reservationArea[pos] = value;
@@ -38,7 +38,7 @@ class GameState extends State<GameWidget> {
             value = 0;
           }
         }
-
+        bool isReservation = reservationArea.containsKey(pos);
         btnArr.add(Container(
             decoration: BoxDecoration(
               border: Border(
@@ -55,26 +55,32 @@ class GameState extends State<GameWidget> {
             child: TextButton(
                 style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all(Colors.black)),
-                onPressed: () {
-                  DataTransient.storage("select.pos", "$x,$y");
-                  // DataTransient.record("select.value", value);
-                  DataTransient.watchOne("select.value", (newValue) {
-                    DataTransient.record("select.value", int.parse(newValue));
-                    setState(() => workArea["$x,$y"] = int.parse(newValue));
-                  });
-                  showDialog(
-                    // 传入 context
-                    context: context,
-                    // 构建 Dialog 的视图
-                    builder: SelectNum.view(),
-                  );
-                },
+                onPressed: isReservation
+                    ? () {}
+                    : () {
+                        DataTransient.storage("select.pos", "$x,$y");
+                        // DataTransient.record("select.value", value);
+                        DataTransient.watchOne("select.value", (newValue) {
+                          DataTransient.record(
+                              "select.value", int.parse(newValue));
+                          setState(
+                              () => workArea["$x,$y"] = int.parse(newValue));
+                        });
+                        showDialog(
+                          // 传入 context
+                          context: context,
+                          // 构建 Dialog 的视图
+                          builder: SelectNum.view(),
+                        );
+                      },
                 child: Text("${value > 0 ? value : ""}",
-                    style:
-                        const TextStyle(color: Colors.black, fontSize: 24)))));
+                    style: TextStyle(
+                        color: isReservation ? Colors.black : Colors.black45,
+                        fontWeight: isReservation ? FontWeight.bold : FontWeight.normal,
+                        fontSize: 26)))));
       }
     }
-    inited = true;
+    initialized = true;
     DataTransient.move("select.pos", "select.old.pos");
     return btnArr;
   }
