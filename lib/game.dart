@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:sudoku/data_transient.dart';
+import 'package:sudoku/number_button.dart';
 import 'package:sudoku/select_num.dart';
 
 class GameWidget extends StatefulWidget {
@@ -52,32 +53,20 @@ class GameState extends State<GameWidget> {
                     : (x % 3 == 0 ? commonLine : BorderSide.none),
               ),
             ),
-            child: TextButton(
-                style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all(Colors.black)),
-                onPressed: isReservation
-                    ? () {}
-                    : () {
-                        DataTransient.storage("select.pos", "$x,$y");
-                        // DataTransient.record("select.value", value);
-                        DataTransient.watchOne("select.value", (newValue) {
-                          DataTransient.record(
-                              "select.value", int.parse(newValue));
-                          setState(
-                              () => workArea["$x,$y"] = int.parse(newValue));
-                        });
-                        showDialog(
-                          // 传入 context
-                          context: context,
-                          // 构建 Dialog 的视图
-                          builder: SelectNum.view(),
-                        );
-                      },
-                child: Text("${value > 0 ? value : ""}",
-                    style: TextStyle(
-                        color: isReservation ? Colors.black : Colors.black45,
-                        fontWeight: isReservation ? FontWeight.bold : FontWeight.normal,
-                        fontSize: 26)))));
+            child: NumberButton(
+                isReservation: isReservation,
+                value: value,
+                action: () {
+                  DataTransient.storage("select.pos", "$x,$y");
+                  DataTransient.watchOne("select.value", (newValue) {
+                    DataTransient.record("select.value", int.parse(newValue));
+                    setState(() => workArea["$x,$y"] = int.parse(newValue));
+                  });
+                  showDialog(
+                    context: context,
+                    builder: SelectNum.view(),
+                  );
+                })));
       }
     }
     initialized = true;
