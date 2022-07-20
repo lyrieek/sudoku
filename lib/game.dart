@@ -14,7 +14,9 @@ class GameWidget extends StatefulWidget {
 }
 
 class GameState extends State<GameWidget> {
+  Map<String, int> reservationArea = {};
   Map<String, int> workArea = {};
+  bool inited = false;
 
   List<Container> getBox(BuildContext context) {
     const commonLine = BorderSide(color: Colors.orange, width: 1);
@@ -22,9 +24,21 @@ class GameState extends State<GameWidget> {
     List<Container> btnArr = [];
     for (int x = 1; x <= 9; x++) {
       for (int y = 1; y <= 9; y++) {
-        int value = DataTransient.str("select.pos") == "$x,$y"
-            ? DataTransient.get("select.value")
-            : Random().nextInt(9) + 1;
+        String pos = "$x,$y";
+        int value = 0;
+        if (workArea[pos] != null) {
+          value = workArea[pos] ?? 0;
+        } else if(reservationArea[pos] != null) {
+          value = reservationArea[pos] ?? 0;
+        } else if(!inited){
+          value = Random().nextInt(12) - 2;
+          if (value > 0) {
+            reservationArea[pos] = value;
+          } else {
+            value = 0;
+          }
+        }
+
         btnArr.add(Container(
             decoration: BoxDecoration(
               border: Border(
@@ -55,10 +69,12 @@ class GameState extends State<GameWidget> {
                     builder: SelectNum.view(),
                   );
                 },
-                child: Text("$value",
-                    style: const TextStyle(color: Colors.black, fontSize: 24)))));
+                child: Text("${value > 0 ? value : ""}",
+                    style:
+                        const TextStyle(color: Colors.black, fontSize: 24)))));
       }
     }
+    inited = true;
     DataTransient.move("select.pos", "select.old.pos");
     return btnArr;
   }
