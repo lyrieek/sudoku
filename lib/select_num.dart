@@ -50,12 +50,25 @@ class SelectNum {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: TextButton(
-                          onPressed: () {
-                            // 关闭 Dialog
-                            Navigator.pop(_);
-                          },
-                          child: const Text('取消')),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            TextButton(
+                                onPressed: () {
+                                  DataTransient.record("select.value", 0);
+                                  Navigator.pop(_);
+                                },
+                                style: ButtonStyle(
+                                    foregroundColor: MaterialStateProperty.all(Colors.red)),
+                                child: const Text('清除')),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(_);
+                                },
+                                style: ButtonStyle(
+                                    foregroundColor: MaterialStateProperty.all(Colors.grey)),
+                                child: const Text('取消'))
+                          ]),
                     )
                   ],
                 ),
