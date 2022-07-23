@@ -22,6 +22,11 @@
 - 智能推导，推导出一个有必然值的格子
 - 可能性判断，判断可能的几个值中，每个值的可能性
 
+## Data
+
+感谢 [https://github.com/dimitri/sudoku](https://github.com/dimitri/sudoku)
+提供数据
+
 ## License
 
 使用[GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.en.html)与[木兰公共许可证第二版](http://license.coscl.org.cn/MulanPubL-2.0)双重许可

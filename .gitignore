@@ -14,10 +14,8 @@ test/
 /android/app/profile
 /android/app/release
 
-
-暂不传数据
-*.txt
-
+.flutter-plugins
+.flutter-plugins-dependencies
 *.iml
 .metadata
 .packages

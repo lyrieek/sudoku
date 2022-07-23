@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 
 import 'game.dart';
+import 'game_data.dart';
 
 void main() {
   runApp(const SudokuApp());
@@ -33,20 +34,23 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-
   List<TextButton> getLevels() {
     List<TextButton> btnArr = [];
-    for (int i = 1; i <= 6; i++) {
+    for (int i = 1; i <= 7; i++) {
       btnArr.add(TextButton(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => GameWidget(level: i)));
+            GameData(i).read((data){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          GameWidget(level: i, data: data)));
+            });
           },
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.purple),
               padding: MaterialStateProperty.all(
-                  const EdgeInsets.symmetric(
-                      vertical: 10, horizontal: 20))),
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 20))),
           child: Text("第$i关")));
     }
     return btnArr;
